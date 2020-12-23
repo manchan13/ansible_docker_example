@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  # target_node1
+  centos7:
+    build:
+      context: ./nodes/centos7
+      dockerfile: Dockerfile
+      args:
+        - WORKUSER=ansible
+        - USER_UID=1001
+        - USER_GID=1001
+    image: ansible-centos7
+    container_name: ansible-centos7
+    hostname: centos7
+  # target_node2
+  ubuntu20:
+    build:
+      context: ./nodes/ubuntu20
+      dockerfile: Dockerfile
+      args:
+        - WORKUSER=ansible
+        - USER_UID=1001
+        - USER_GID=1001
+    image: ansible-ubuntu20
+    container_name: 'ansible-ubuntu20'
+    hostname: ubuntu20
+    working_dir: /home/work_user
+  # control_node
+  myansible:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: myansible
+    container_name: myansible
+    hostname: myansible
+    tty: true
+    volumes: 
+      - ./playbooks:/myansible
+    working_dir: /myansible
+
